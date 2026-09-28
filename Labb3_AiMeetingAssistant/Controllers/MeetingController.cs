@@ -1,4 +1,5 @@
-﻿using Labb3_AiMeetingAssistant.Services;
+﻿using Labb3_AiMeetingAssistant.Models;
+using Labb3_AiMeetingAssistant.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Labb3_AiMeetingAssistant.Controllers
@@ -16,13 +17,36 @@ namespace Labb3_AiMeetingAssistant.Controllers
             _environment = environment;
         }
 
-        [HttpPost("agenda")]
-        public async Task<IActionResult> CreateMeetingAgenda(string userPrompt)
+        [HttpPost("summary")]
+        [EndpointSummary("Sammanfatta Mötesanteckningar")]
+        public async Task<IActionResult> SummarizeMeetingNotes(Meeting meeting)
         {
-            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "AgendaSystemPrompt.md");
+            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
             var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
 
-            var result = await _aiService.SendPrompt(systemPrompt, userPrompt);
+            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
+            return Ok(result);
+        }
+
+        [HttpPost("agenda")]
+        [EndpointSummary("Generera Mötesagenda")]
+        public async Task<IActionResult> CreateMeetingAgenda(Meeting meeting)
+        {
+            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md");
+            var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
+
+            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
+            return Ok(result);
+        }
+
+        [HttpPost("invite")]
+        [EndpointSummary("Skapa Mötesinbjudan")]
+        public async Task<IActionResult> CreateMeetingInvite(Meeting meeting)
+        {
+            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
+            var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
+
+            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
             return Ok(result);
         }
     }

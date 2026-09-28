@@ -1,7 +1,9 @@
-﻿namespace Labb3_AiMeetingAssistant.Services
+﻿using Labb3_AiMeetingAssistant.Utils;
+
+namespace Labb3_AiMeetingAssistant.Services
 {
     public interface IAiService
     {
-        Task<string> SendPrompt(string systemPrompt, string userPrompt);
+        Task<ServiceResult<string>> SendPrompt(string systemPrompt, string userPrompt);
     }
 }
