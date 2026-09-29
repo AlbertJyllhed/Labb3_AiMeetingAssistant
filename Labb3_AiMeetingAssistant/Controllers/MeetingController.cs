@@ -1,6 +1,5 @@
 ﻿using Labb3_AiMeetingAssistant.DTOs;
 using Labb3_AiMeetingAssistant.Interfaces;
-using Labb3_AiMeetingAssistant.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Labb3_AiMeetingAssistant.Controllers
@@ -9,84 +8,68 @@ namespace Labb3_AiMeetingAssistant.Controllers
     [ApiController]
     public class MeetingController : ControllerBase
     {
-        private readonly IAiService _aiService;
         private readonly IMeetingService _meetingService;
-        private readonly IWebHostEnvironment _environment;
 
-        public MeetingController(
-            IAiService aiService,
-            IMeetingService meetingService,
-            IWebHostEnvironment environment)
+        public MeetingController(IMeetingService meetingService)
         {
-            _aiService = aiService;
             _meetingService = meetingService;
-            _environment = environment;
         }
-
-        #region AI-Endpoints
-
-        [HttpPost("summary")]
-        [EndpointSummary("Sammanfatta Mötesanteckningar")]
-        public async Task<IActionResult> SummarizeMeetingNotes(PromptRequest request)
-        {
-            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
-            var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
-
-            var result = await _aiService.SendPrompt(systemPrompt, request);
-            return Ok(result);
-        }
-
-        [HttpPost("agenda")]
-        [EndpointSummary("Generera Mötesagenda")]
-        public async Task<IActionResult> CreateMeetingAgenda(PromptRequest request)
-        {
-            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md");
-            var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
-
-            var result = await _aiService.SendPrompt(systemPrompt, request);
-            return Ok(result);
-        }
-
-        [HttpPost("invite")]
-        [EndpointSummary("Skapa Mötesinbjudan")]
-        public async Task<IActionResult> CreateMeetingInvite(PromptRequest request)
-        {
-            var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
-            var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
-
-            var result = await _aiService.SendPrompt(systemPrompt, request);
-            return Ok(result);
-        }
-
-        #endregion
-
-        #region CRUD-Endpoints
 
         [HttpGet]
         [EndpointSummary("Hämta Mötesbokningar")]
         public async Task<ActionResult<ICollection<GetMeetingResponse>>> GetMeetings()
         {
             var response = await _meetingService.GetMeetingsAsync();
-            return Ok(response);
+
+            if (!response.IsSuccess)
+            {
+                return NotFound(response.ErrorMessage);
+            }
+
+            return Ok(response.Data);
         }
 
-        [HttpGet("meetings/{id}")]
+        [HttpGet("{id}")]
         [EndpointSummary("Hämta Mötesbokning")]
         public async Task<ActionResult<GetMeetingResponse>> GetMeetingById(Guid id)
         {
             var response = await _meetingService.GetMeetingByIdAsync(id);
-            return Ok(response);
+
+            if (!response.IsSuccess)
+            {
+                return NotFound(response.ErrorMessage);
+            }
+
+            return Ok(response.Data);
         }
 
-        [HttpPost("create-meeting")]
+        [HttpPost("create")]
         [EndpointSummary("Skapa Nytt Möte")]
         public async Task<IActionResult> CreateMeeting(CreateMeetingRequest request)
         {
             var response = await _meetingService.CreateMeetingAsync(request);
+
+            if (!response.IsSuccess)
+            {
+                return NotFound(response.ErrorMessage);
+            }
+
             return CreatedAtAction(
                 nameof(GetMeetingById), new { id = response.Data?.Id }, response.Data);
         }
 
-        #endregion
+        [HttpDelete("delete")]
+        [EndpointSummary("Ta bort Möte")]
+        public async Task<IActionResult> DeleteMeeting(Guid id)
+        {
+            var result = await _meetingService.DeleteMeetingAsync(id);
+
+            if (!result.IsSuccess)
+            {
+                return NotFound(result.ErrorMessage);
+            }
+
+            return NoContent();
+        }
     }
 }

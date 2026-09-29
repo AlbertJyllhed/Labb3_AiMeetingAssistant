@@ -35,23 +35,21 @@ namespace Labb3_AiMeetingAssistant.Services
 
         public async Task<ServiceResult<GetMeetingResponse>> GetMeetingByIdAsync(Guid id)
         {
-            var result = await _ctx.Meetings
+            var meeting = await _ctx.Meetings
                 .AsNoTracking()
-                .Select(m => m.ToResponse())
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (result == null)
+            if (meeting == null)
             {
                 return ServiceResult<GetMeetingResponse>
                     .Failure($"Det gick inte att hitta något möte med ID: {id}");
             }
 
-            return ServiceResult<GetMeetingResponse>.Success(result);
+            return ServiceResult<GetMeetingResponse>.Success(meeting.ToResponse());
         }
 
         public async Task<ServiceResult<GetMeetingResponse>> CreateMeetingAsync(CreateMeetingRequest request)
         {
-            //var meeting = request.ToEntity();
             var meeting = new Meeting
             {
                 Id = Guid.NewGuid(),
@@ -72,6 +70,21 @@ namespace Labb3_AiMeetingAssistant.Services
             await _ctx.SaveChangesAsync();
 
             return ServiceResult<GetMeetingResponse>.Success(meeting.ToResponse());
+        }
+
+        public async Task<ServiceResult<bool>> DeleteMeetingAsync(Guid id)
+        {
+            var deletedCount = await _ctx.Meetings
+                .Where(m => m.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (deletedCount == 0)
+            {
+                return ServiceResult<bool>
+                    .Failure($"Det gick inte att hitta något möte med ID: {id}");
+            }
+
+            return ServiceResult<bool>.Success(true);
         }
     }
 }

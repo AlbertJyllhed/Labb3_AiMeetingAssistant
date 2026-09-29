@@ -1,6 +1,5 @@
 ﻿using Google.GenAI;
 using Google.GenAI.Types;
-using Labb3_AiMeetingAssistant.DTOs;
 using Labb3_AiMeetingAssistant.Interfaces;
 using Labb3_AiMeetingAssistant.Utils;
 
@@ -17,7 +16,7 @@ namespace Labb3_AiMeetingAssistant.Services
             _models = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash"];
         }
 
-        public async Task<ServiceResult<string>> SendPrompt(string systemPrompt, PromptRequest request)
+        public async Task<ServiceResult<string>> SendPrompt(string systemPrompt, string userPrompt)
         {
             var client = new Client(apiKey: _apiKey);
 
@@ -43,7 +42,7 @@ namespace Labb3_AiMeetingAssistant.Services
                 {
                     var response = await client.Models.GenerateContentAsync(
                         model: model,
-                        contents: request.Prompt,
+                        contents: userPrompt,
                         config: config
                     );
 

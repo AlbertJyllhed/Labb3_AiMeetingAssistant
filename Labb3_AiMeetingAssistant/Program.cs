@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using Labb3_AiMeetingAssistant.Services;
-using Scalar.AspNetCore;
 using Labb3_AiMeetingAssistant.Data;
 using Labb3_AiMeetingAssistant.Interfaces;
+using Labb3_AiMeetingAssistant.Services;
+using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MeetingDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddScoped<IAiService, GeminiService>();
+builder.Services.AddScoped<IMeetingAiService, MeetingAiService>();
 builder.Services.AddScoped<IMeetingService, MeetingService>();
 
 builder.Services.AddCors(options =>

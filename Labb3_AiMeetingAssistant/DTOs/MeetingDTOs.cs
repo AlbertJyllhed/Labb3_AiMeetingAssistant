@@ -30,14 +30,4 @@ namespace Labb3_AiMeetingAssistant.DTOs
         public string? BookedLocation { get; set; }
         public List<string> Members { get; set; } = [];
     }
-
-    public record PromptRequest
-    {
-        [Required]
-        public Guid MeetingId { get; set; }
-
-        [Required]
-        [MinLength(5)]
-        public string Prompt { get; set; } = string.Empty;
-    }
 }
