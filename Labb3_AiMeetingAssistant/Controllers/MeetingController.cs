@@ -1,5 +1,5 @@
-﻿using Labb3_AiMeetingAssistant.Models;
-using Labb3_AiMeetingAssistant.Services;
+﻿using Labb3_AiMeetingAssistant.Interfaces;
+using Labb3_AiMeetingAssistant.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Labb3_AiMeetingAssistant.Controllers
@@ -17,6 +17,7 @@ namespace Labb3_AiMeetingAssistant.Controllers
             _environment = environment;
         }
 
+        #region AI-Endpoints
         [HttpPost("summary")]
         [EndpointSummary("Sammanfatta Mötesanteckningar")]
         public async Task<IActionResult> SummarizeMeetingNotes(Meeting meeting)
@@ -49,5 +50,9 @@ namespace Labb3_AiMeetingAssistant.Controllers
             var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
             return Ok(result);
         }
+        #endregion
+
+        #region CRUD-Endpoints
+        #endregion
     }
 }

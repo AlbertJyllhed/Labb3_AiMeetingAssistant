@@ -1,6 +1,6 @@
 ﻿using Labb3_AiMeetingAssistant.Utils;
 
-namespace Labb3_AiMeetingAssistant.Services
+namespace Labb3_AiMeetingAssistant.Interfaces
 {
     public interface IAiService
     {

@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Labb3_AiMeetingAssistant.Services;
 using Scalar.AspNetCore;
+using Labb3_AiMeetingAssistant.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<MeetingDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddScoped<IAiService, GeminiService>();
 
@@ -23,6 +28,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MeetingDbContext>();
+    db.Database.EnsureDeleted(); // For debugging
+    db.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

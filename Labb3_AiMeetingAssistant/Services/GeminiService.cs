@@ -1,5 +1,6 @@
 ﻿using Google.GenAI;
 using Google.GenAI.Types;
+using Labb3_AiMeetingAssistant.Interfaces;
 using Labb3_AiMeetingAssistant.Utils;
 
 namespace Labb3_AiMeetingAssistant.Services
