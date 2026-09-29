@@ -22,8 +22,5 @@ namespace Labb3_AiMeetingAssistant.Mapping
             BookedLocation = meeting.BookedLocation,
             Members = [.. meeting.Members]
         };
-
-        public static List<GetMeetingResponse> ToResponse(this IEnumerable<Meeting> meetings) =>
-            meetings.Select(m => m.ToResponse()).ToList();
     }
 }

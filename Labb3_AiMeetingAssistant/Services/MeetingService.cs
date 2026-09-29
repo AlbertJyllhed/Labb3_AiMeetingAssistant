@@ -18,7 +18,10 @@ namespace Labb3_AiMeetingAssistant.Services
 
         public async Task<ServiceResult<ICollection<GetMeetingResponse>>> GetMeetingsAsync()
         {
-            var result = _ctx.Meetings.ToResponse();
+            var result = await _ctx.Meetings
+                .AsNoTracking()
+                .Select(m => m.ToResponse())
+                .ToListAsync();
 
             if (result == null || result.Count == 0)
             {
@@ -51,7 +54,8 @@ namespace Labb3_AiMeetingAssistant.Services
 
             if (meeting == null)
             {
-                return ServiceResult<GetMeetingResponse>.Failure("Kunde inte skapa ett nytt möte");
+                return ServiceResult<GetMeetingResponse>
+                    .Failure("Det gick inte att skapa ett nytt möte");
             }
 
             await _ctx.AddAsync(meeting);

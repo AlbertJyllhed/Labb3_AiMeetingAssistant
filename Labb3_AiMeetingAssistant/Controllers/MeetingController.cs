@@ -1,4 +1,5 @@
-﻿using Labb3_AiMeetingAssistant.Interfaces;
+﻿using Labb3_AiMeetingAssistant.DTOs;
+using Labb3_AiMeetingAssistant.Interfaces;
 using Labb3_AiMeetingAssistant.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -59,9 +60,26 @@ namespace Labb3_AiMeetingAssistant.Controllers
 
         #region CRUD-Endpoints
         [HttpGet("meetings")]
-        public async Task<IActionResult> GetMeetings()
+        [EndpointSummary("Hämta Mötesbokningar")]
+        public async Task<ActionResult<ICollection<GetMeetingResponse>>> GetMeetings()
         {
             var response = await _meetingService.GetMeetingsAsync();
+            return Ok(response);
+        }
+
+        [HttpGet("meeting")]
+        [EndpointSummary("Hämta Mötesbokning")]
+        public async Task<ActionResult<GetMeetingResponse>> GetMeetingById(int id)
+        {
+            var response = await _meetingService.GetMeetingByIdAsync(id);
+            return Ok(response);
+        }
+
+        [HttpPost("create-meeting")]
+        [EndpointSummary("Skapa Nytt Möte")]
+        public async Task<IActionResult> CreateMeeting(CreateMeetingRequest request)
+        {
+            var response = await _meetingService.CreateMeetingAsync(request);
             return Ok(response);
         }
         #endregion
