@@ -4,7 +4,7 @@ namespace Labb3_AiMeetingAssistant.DTOs
 {
     public record GetMeetingResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime BookedTime { get; set; }
         public double DurationMin { get; set; }
         public string Notes { get; set; } = string.Empty;
@@ -29,5 +29,15 @@ namespace Labb3_AiMeetingAssistant.DTOs
         public string Notes { get; set; } = string.Empty;
         public string? BookedLocation { get; set; }
         public List<string> Members { get; set; } = [];
+    }
+
+    public record PromptRequest
+    {
+        [Required]
+        public Guid MeetingId { get; set; }
+
+        [Required]
+        [MinLength(5)]
+        public string Prompt { get; set; } = string.Empty;
     }
 }

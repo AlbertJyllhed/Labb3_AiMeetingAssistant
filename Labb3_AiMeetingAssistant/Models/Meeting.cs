@@ -1,8 +1,11 @@
-﻿namespace Labb3_AiMeetingAssistant.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Labb3_AiMeetingAssistant.Models
 {
     public class Meeting
     {
-        public int Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
         public DateTime BookedTime { get; set; }
         public double DurationMin { get; set; }
         public string Notes { get; set; } = string.Empty;

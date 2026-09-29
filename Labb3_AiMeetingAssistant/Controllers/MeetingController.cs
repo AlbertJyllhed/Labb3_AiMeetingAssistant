@@ -24,42 +24,45 @@ namespace Labb3_AiMeetingAssistant.Controllers
         }
 
         #region AI-Endpoints
+
         [HttpPost("summary")]
         [EndpointSummary("Sammanfatta Mötesanteckningar")]
-        public async Task<IActionResult> SummarizeMeetingNotes(Meeting meeting)
+        public async Task<IActionResult> SummarizeMeetingNotes(PromptRequest request)
         {
             var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
             var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
 
-            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
+            var result = await _aiService.SendPrompt(systemPrompt, request);
             return Ok(result);
         }
 
         [HttpPost("agenda")]
         [EndpointSummary("Generera Mötesagenda")]
-        public async Task<IActionResult> CreateMeetingAgenda(Meeting meeting)
+        public async Task<IActionResult> CreateMeetingAgenda(PromptRequest request)
         {
             var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md");
             var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
 
-            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
+            var result = await _aiService.SendPrompt(systemPrompt, request);
             return Ok(result);
         }
 
         [HttpPost("invite")]
         [EndpointSummary("Skapa Mötesinbjudan")]
-        public async Task<IActionResult> CreateMeetingInvite(Meeting meeting)
+        public async Task<IActionResult> CreateMeetingInvite(PromptRequest request)
         {
             var path = Path.Combine(_environment.ContentRootPath, "Prompts", "meeting-agenda-instructions.md"); // change to new instructions
             var systemPrompt = await System.IO.File.ReadAllTextAsync(path);
 
-            var result = await _aiService.SendPrompt(systemPrompt, meeting.Notes);
+            var result = await _aiService.SendPrompt(systemPrompt, request);
             return Ok(result);
         }
+
         #endregion
 
         #region CRUD-Endpoints
-        [HttpGet("meetings")]
+
+        [HttpGet]
         [EndpointSummary("Hämta Mötesbokningar")]
         public async Task<ActionResult<ICollection<GetMeetingResponse>>> GetMeetings()
         {
@@ -67,9 +70,9 @@ namespace Labb3_AiMeetingAssistant.Controllers
             return Ok(response);
         }
 
-        [HttpGet("meeting")]
+        [HttpGet("meetings/{id}")]
         [EndpointSummary("Hämta Mötesbokning")]
-        public async Task<ActionResult<GetMeetingResponse>> GetMeetingById(int id)
+        public async Task<ActionResult<GetMeetingResponse>> GetMeetingById(Guid id)
         {
             var response = await _meetingService.GetMeetingByIdAsync(id);
             return Ok(response);
@@ -80,8 +83,10 @@ namespace Labb3_AiMeetingAssistant.Controllers
         public async Task<IActionResult> CreateMeeting(CreateMeetingRequest request)
         {
             var response = await _meetingService.CreateMeetingAsync(request);
-            return Ok(response);
+            return CreatedAtAction(
+                nameof(GetMeetingById), new { id = response.Data?.Id }, response.Data);
         }
+
         #endregion
     }
 }

@@ -2,6 +2,7 @@
 using Labb3_AiMeetingAssistant.DTOs;
 using Labb3_AiMeetingAssistant.Interfaces;
 using Labb3_AiMeetingAssistant.Mapping;
+using Labb3_AiMeetingAssistant.Models;
 using Labb3_AiMeetingAssistant.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,7 @@ namespace Labb3_AiMeetingAssistant.Services
             return ServiceResult<ICollection<GetMeetingResponse>>.Success(result);
         }
 
-        public async Task<ServiceResult<GetMeetingResponse>> GetMeetingByIdAsync(int id)
+        public async Task<ServiceResult<GetMeetingResponse>> GetMeetingByIdAsync(Guid id)
         {
             var result = await _ctx.Meetings
                 .AsNoTracking()
@@ -50,7 +51,16 @@ namespace Labb3_AiMeetingAssistant.Services
 
         public async Task<ServiceResult<GetMeetingResponse>> CreateMeetingAsync(CreateMeetingRequest request)
         {
-            var meeting = request.ToEntity();
+            //var meeting = request.ToEntity();
+            var meeting = new Meeting
+            {
+                Id = Guid.NewGuid(),
+                BookedTime = request.BookedDate.ToDateTime(request.BookedTime),
+                DurationMin = request.DurationMin,
+                Notes = request.Notes,
+                BookedLocation = request.BookedLocation,
+                Members = [.. request.Members]
+            };
 
             if (meeting == null)
             {
