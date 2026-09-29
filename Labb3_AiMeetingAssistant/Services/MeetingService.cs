@@ -1,8 +1,8 @@
 ﻿using Labb3_AiMeetingAssistant.Data;
 using Labb3_AiMeetingAssistant.DTOs;
 using Labb3_AiMeetingAssistant.Interfaces;
-using Labb3_AiMeetingAssistant.Utils;
 using Labb3_AiMeetingAssistant.Mapping;
+using Labb3_AiMeetingAssistant.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Labb3_AiMeetingAssistant.Services
@@ -31,12 +31,33 @@ namespace Labb3_AiMeetingAssistant.Services
 
         public async Task<ServiceResult<GetMeetingResponse>> GetMeetingByIdAsync(int id)
         {
+            var result = await _ctx.Meetings
+                .AsNoTracking()
+                .Select(m => m.ToResponse())
+                .FirstOrDefaultAsync(m => m.Id == id);
 
+            if (result == null)
+            {
+                return ServiceResult<GetMeetingResponse>
+                    .Failure($"Det gick inte att hitta något möte med ID: {id}");
+            }
+
+            return ServiceResult<GetMeetingResponse>.Success(result);
         }
 
         public async Task<ServiceResult<GetMeetingResponse>> CreateMeetingAsync(CreateMeetingRequest request)
         {
+            var meeting = request.ToEntity();
 
+            if (meeting == null)
+            {
+                return ServiceResult<GetMeetingResponse>.Failure("Kunde inte skapa ett nytt möte");
+            }
+
+            await _ctx.AddAsync(meeting);
+            await _ctx.SaveChangesAsync();
+
+            return ServiceResult<GetMeetingResponse>.Success(meeting.ToResponse());
         }
     }
 }

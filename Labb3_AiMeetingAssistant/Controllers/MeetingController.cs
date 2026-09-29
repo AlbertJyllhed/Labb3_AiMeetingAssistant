@@ -9,11 +9,16 @@ namespace Labb3_AiMeetingAssistant.Controllers
     public class MeetingController : ControllerBase
     {
         private readonly IAiService _aiService;
+        private readonly IMeetingService _meetingService;
         private readonly IWebHostEnvironment _environment;
 
-        public MeetingController(IAiService aiService, IWebHostEnvironment environment)
+        public MeetingController(
+            IAiService aiService,
+            IMeetingService meetingService,
+            IWebHostEnvironment environment)
         {
             _aiService = aiService;
+            _meetingService = meetingService;
             _environment = environment;
         }
 
@@ -53,6 +58,12 @@ namespace Labb3_AiMeetingAssistant.Controllers
         #endregion
 
         #region CRUD-Endpoints
+        [HttpGet("meetings")]
+        public async Task<IActionResult> GetMeetings()
+        {
+            var response = await _meetingService.GetMeetingsAsync();
+            return Ok(response);
+        }
         #endregion
     }
 }
