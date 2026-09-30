@@ -1,0 +1,18 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --watermelon: #ed254e;
+    --royal-gold: #f9dc5c;
+    --mint-cream: #f4fffd;
+    --prussian-blue: #011936;
+    --charcoal-blue: #465362;
+}
+
+html,
+body {
+    background-color: var(--charcoal-blue);
+}

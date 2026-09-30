@@ -58,7 +58,7 @@ namespace Labb3_AiMeetingAssistant.Controllers
                 nameof(GetMeetingById), new { id = response.Data?.Id }, response.Data);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("{id:guid}")]
         [EndpointSummary("Ta bort Möte")]
         public async Task<IActionResult> DeleteMeeting(Guid id)
         {

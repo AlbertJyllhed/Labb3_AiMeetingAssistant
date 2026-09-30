@@ -1,0 +1,22 @@
+.meeting-card {
+    background-color: var(--royal-gold);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-top: 1px solid var(--mint-cream);
+    box-shadow: 0 3px 3px var(--prussian-blue);
+    border-radius: 0.5rem;
+}
+
+.meeting-card p {
+    color: var(--prussian-blue);
+}
+
+.meeting-card .meeting-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.meeting-card .notes {
+    color: var(--charcoal-blue);
+}
