@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import type { CreateMeetingRequest, Meeting } from "../types/types";
 
 const baseUrl =
-    import.meta.env.MEETING_API_URL ?? "https://localhost:7285/api/meetings";
+    import.meta.env.VITE_MEETING_API_URL ??
+    "https://localhost:7285/api/meetings";
 
 function useMeetingApi() {
     const [meetings, setMeetings] = useState<Meeting[]>();
@@ -22,7 +23,9 @@ function useMeetingApi() {
             if (!response.ok) {
                 // Backend returns plain-text error messages on failure
                 const message = await response.text();
-                setError(message || `Request failed (${response.status})`);
+                setError(
+                    message || `Misslyckad förfrågan (${response.status})`,
+                );
                 return undefined;
             }
 
@@ -34,7 +37,7 @@ function useMeetingApi() {
             return (await response.json()) as T;
         } catch {
             // Network failure, server down, CORS issue, etc.
-            setError("Could not reach the server. Please try again.");
+            setError("Det gick inte att nå servern. Försök igen.");
             return undefined;
         }
     };
@@ -49,21 +52,27 @@ function useMeetingApi() {
 
     const getMeetingById = (id: string) => request<Meeting>(`${baseUrl}/${id}`);
 
-    const createMeeting = (body: CreateMeetingRequest) =>
-        request<Meeting>(`${baseUrl}/create`, {
+    const createMeeting = async (body: CreateMeetingRequest) => {
+        const created = await request<Meeting>(`${baseUrl}/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
         });
 
+        if (created) {
+            await getMeetings();
+        }
+
+        return created;
+    };
+
     const deleteMeeting = async (id: string): Promise<boolean> => {
         setError(null);
 
         try {
-            const response = await fetch(
-                `${baseUrl}/delete?id=${encodeURIComponent(id)}`,
-                { method: "DELETE" },
-            );
+            const response = await fetch(`${baseUrl}/${id}`, {
+                method: "DELETE",
+            });
 
             if (!response.ok) {
                 const message = await response.text();
@@ -71,9 +80,10 @@ function useMeetingApi() {
                 return false;
             }
 
+            await getMeetings();
             return true;
         } catch {
-            setError("Could not reach the server. Please try again.");
+            setError("Det gick inte att nå servern. Försök igen.");
             return false;
         }
     };

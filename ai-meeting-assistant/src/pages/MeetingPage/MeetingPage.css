@@ -2,3 +2,14 @@
     color: var(--mint-cream);
     margin: 1rem 0;
 }
+
+.meeting-page .meeting-selected {
+    margin-bottom: 1rem;
+}
+
+.meeting-page .meeting-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
