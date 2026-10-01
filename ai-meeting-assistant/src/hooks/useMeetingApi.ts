@@ -43,7 +43,10 @@ function useMeetingApi() {
     };
 
     const getMeetings = async () => {
-        setMeetings(await request<Meeting[]>(baseUrl));
+        const data = await request<Meeting[]>(baseUrl);
+        if (data) {
+            setMeetings(data);
+        }
     };
 
     useEffect(() => {
@@ -92,11 +95,11 @@ function useMeetingApi() {
 
     return {
         meetings,
+        error,
         getMeetings,
         getMeetingById,
         createMeeting,
         deleteMeeting,
-        error,
         clearError,
     };
 }

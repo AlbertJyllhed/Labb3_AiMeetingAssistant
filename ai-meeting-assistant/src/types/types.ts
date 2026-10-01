@@ -63,3 +63,8 @@ export type AiSummaryItem = {
     owner: string;
     deadline: string;
 };
+
+export type AiResult =
+    | { kind: "summary"; data: AiSummaryResponse }
+    | { kind: "agenda"; data: AiAgendaResponse }
+    | { kind: "invite"; data: AiInviteResponse };

@@ -1,75 +1,66 @@
 import { useState } from "react";
+import type { AiResult } from "../types/types";
 
 const baseUrl =
     import.meta.env.VITE_AI_API_URL ?? "https://localhost:7285/api/ai";
 
-function useAiApi() {
-    const [apiMessage, setApiMessage] = useState<string>();
-    const [error, setError] = useState<string | null>(null);
+type AiKind = AiResult["kind"];
+type AiData<K extends AiKind> = Extract<AiResult, { kind: K }>["data"];
 
-    // Runs a request, stores any error message in state, and returns
-    // the data on success or undefined on failure.
-    const request = async (
+function useAiApi() {
+    const [result, setResult] = useState<AiResult>();
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const request = async <T>(
         url: string,
         options?: RequestInit,
-    ): Promise<string | undefined> => {
+    ): Promise<T | undefined> => {
         setError(null);
-
         try {
             const response = await fetch(url, options);
 
             if (!response.ok) {
-                // Backend returns plain-text error messages on failure
                 const message = await response.text();
                 setError(
                     message || `Misslyckad förfrågan (${response.status})`,
                 );
                 return undefined;
             }
+            if (response.status === 204) return undefined;
 
-            // 204 No Content has no body to parse
-            if (response.status === 204) {
-                return undefined;
-            }
-
-            return (await response.json()) as string;
+            return (await response.json()) as T;
         } catch {
-            // Network failure, server down, CORS issue, etc.
             setError("Det gick inte att nå servern. Försök igen.");
             return undefined;
         }
     };
 
-    const summarize = async (meetingId: string) => {
-        const result = await request(`${baseUrl}/summary/${meetingId}`, {
-            method: "POST",
-        });
-        setApiMessage(result);
-    };
+    const generate = async <K extends AiKind>(kind: K, meetingId: string) => {
+        setIsLoading(true);
+        setResult(undefined);
 
-    const createAgenda = async (meetingId: string) => {
-        const result = await request(`${baseUrl}/agenda/${meetingId}`, {
-            method: "POST",
-        });
-        setApiMessage(result);
-    };
+        const data = await request<AiData<K>>(
+            `${baseUrl}/${kind}/${meetingId}`,
+            {
+                method: "POST",
+            },
+        );
 
-    const createInvite = async (meetingId: string) => {
-        const result = await request(`${baseUrl}/invite/${meetingId}`, {
-            method: "POST",
-        });
-        setApiMessage(result);
+        setIsLoading(false);
+        if (data) {
+            setResult({ kind, data } as AiResult);
+        }
     };
-
-    const clearError = () => setError(null);
 
     return {
-        apiMessage,
-        summarize,
-        createAgenda,
-        createInvite,
+        result,
+        isLoading,
         error,
-        clearError,
+        summarize: (id: string) => generate("summary", id),
+        createAgenda: (id: string) => generate("agenda", id),
+        createInvite: (id: string) => generate("invite", id),
+        clearError: () => setError(null),
     };
 }
 

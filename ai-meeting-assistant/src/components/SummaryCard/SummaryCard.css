@@ -1,0 +1,72 @@
+.summary-card {
+    background-color: var(--royal-gold);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--mint-cream);
+    box-shadow: 0 3px 3px var(--prussian-blue);
+    border-radius: 0.5rem;
+}
+
+.summary-card h2,
+.summary-card h3 {
+    color: var(--prussian-blue);
+}
+
+.summary-card h2 {
+    margin-bottom: 0.5rem;
+}
+
+.summary-card h3 {
+    margin: 1rem 0 0.5rem;
+}
+
+.summary-card .summary-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-card .summary-row p {
+    background-color: var(--mint-cream);
+    color: var(--prussian-blue);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.summary-card .summary-text {
+    color: var(--prussian-blue);
+}
+
+.summary-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.summary-card li {
+    background-color: var(--mint-cream);
+    color: var(--prussian-blue);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.summary-card .action-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: baseline;
+}
+
+.summary-card .action-owner {
+    font-style: italic;
+    color: var(--charcoal-blue);
+}
+
+.summary-card .action-deadline {
+    margin-left: auto;
+    font-weight: bold;
+}

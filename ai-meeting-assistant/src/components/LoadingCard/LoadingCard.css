@@ -1,0 +1,36 @@
+.loading-card {
+    background-color: var(--royal-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--mint-cream);
+    box-shadow: 0 3px 3px var(--prussian-blue);
+    border-radius: 0.5rem;
+}
+
+.loader {
+    --size: 1px;
+    width: calc(48 * var(--size));
+    height: calc(48 * var(--size));
+    border: calc(5 * var(--size)) solid var(--prussian-blue);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

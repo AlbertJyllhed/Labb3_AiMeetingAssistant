@@ -1,45 +1,39 @@
-.meeting-card {
+.meeting-form {
     background-color: var(--royal-gold);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     padding: 1rem;
     border-top: 1px solid var(--mint-cream);
     box-shadow: 0 3px 3px var(--prussian-blue);
     border-radius: 0.5rem;
 }
 
-.meeting-card.clickable {
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.meeting-card.clickable:hover {
-    transform: translateY(-4px);
-}
-
-.meeting-card .meeting-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.meeting-card .meeting-row p {
-    background-color: var(--mint-cream);
+.meeting-form input {
+    font-size: 16px;
+    height: 24px;
     padding: 0.5rem;
+    border: 1px solid var(--prussian-blue);
     border-radius: 0.5rem;
 }
 
-.meeting-card .notes {
-    background-color: var(--mint-cream);
-    padding: 1rem;
+.meeting-form textarea {
+    font-size: 16px;
+    height: 48px;
+    min-height: 24px;
+    padding: 0.5rem;
+    border: 1px solid var(--prussian-blue);
     border-radius: 0.5rem;
+    resize: vertical;
 }
 
-.meeting-card .delete-btn {
+.meeting-form button {
     background-color: var(--watermelon);
     color: var(--mint-cream);
+    flex: 1;
+    font-size: 16px;
     font-weight: bold;
     border: none;
-    margin-left: auto;
     padding: 0.5rem 1rem;
     border-top: 1px solid var(--mint-cream);
     border-radius: 0.5rem;
@@ -47,6 +41,6 @@
     transition: all 0.2s;
 }
 
-.meeting-card .delete-btn:hover {
+.meeting-form button:hover {
     box-shadow: 0 3px 3px var(--charcoal-blue);
 }

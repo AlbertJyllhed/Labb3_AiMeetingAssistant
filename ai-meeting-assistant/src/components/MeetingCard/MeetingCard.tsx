@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import type { Meeting } from "../../types/types";
 import "./MeetingCard.css";
 
@@ -27,7 +28,8 @@ function MeetingCard({
         year: "numeric",
     });
 
-    const handleDeleteMeeting = (id: string) => {
+    const handleDeleteMeeting = (e: MouseEvent, id: string) => {
+        e.stopPropagation();
         if (window.confirm("Är du säker att du vill ta bort mötet?")) {
             onDelete?.(id);
         }
@@ -38,16 +40,6 @@ function MeetingCard({
             className={`meeting-card ${preview ? "" : "clickable"}`}
             onClick={() => onSelect?.(meeting)}
         >
-            {!preview && (
-                <div className="meeting-header">
-                    <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteMeeting(meeting.id ?? "")}
-                    >
-                        Ta bort
-                    </button>
-                </div>
-            )}
             <div className="meeting-row">
                 <p>
                     <strong>Plats: </strong>
@@ -61,6 +53,16 @@ function MeetingCard({
                     <strong>Längd: </strong>
                     {meeting.durationMin} min
                 </p>
+                {!preview && (
+                    <button
+                        className="delete-btn"
+                        onClick={(e) =>
+                            handleDeleteMeeting(e, meeting.id ?? "")
+                        }
+                    >
+                        Ta bort
+                    </button>
+                )}
             </div>
             <div className="meeting-row">
                 {meeting.members?.map((member, index) => (

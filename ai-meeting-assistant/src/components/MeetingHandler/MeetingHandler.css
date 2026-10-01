@@ -45,3 +45,15 @@
 .meeting-handler .handler-row button:hover {
     box-shadow: 0 3px 3px var(--charcoal-blue);
 }
+
+.meeting-handler .handler-row button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+fieldset.handler-row {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-inline-size: 0;
+}

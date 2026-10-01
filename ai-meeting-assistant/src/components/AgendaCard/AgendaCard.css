@@ -1,0 +1,76 @@
+.agenda-card {
+    background-color: var(--royal-gold);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-top: 1px solid var(--mint-cream);
+    box-shadow: 0 3px 3px var(--prussian-blue);
+    border-radius: 0.5rem;
+}
+
+.agenda-card h2 {
+    color: var(--prussian-blue);
+    margin-bottom: 0.5rem;
+}
+
+.agenda-card .agenda-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.agenda-card .agenda-row p {
+    background-color: var(--mint-cream);
+    color: var(--prussian-blue);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.agenda-card .table-wrapper {
+    overflow-x: auto;
+}
+
+.agenda-card table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+}
+
+.agenda-card th {
+    background-color: var(--prussian-blue);
+    color: var(--mint-cream);
+    text-align: left;
+    padding: 0.5rem;
+}
+
+.agenda-card th:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.agenda-card th:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.agenda-card td {
+    background-color: var(--mint-cream);
+    color: var(--prussian-blue);
+    padding: 0.5rem;
+    vertical-align: top;
+}
+
+.agenda-card td:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+    font-weight: bold;
+}
+
+.agenda-card td:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.agenda-card .time {
+    white-space: nowrap;
+}
+
+.agenda-card .notes {
+    color: var(--charcoal-blue);
+}

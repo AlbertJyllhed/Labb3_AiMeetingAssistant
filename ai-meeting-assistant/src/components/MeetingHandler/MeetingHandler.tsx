@@ -3,13 +3,17 @@ import type { Meeting } from "../../types/types";
 import "./MeetingHandler.css";
 
 import MeetingCard from "../MeetingCard/MeetingCard";
+import LoadingCard from "../LoadingCard/LoadingCard";
+import ErrorCard from "../ErrorCard/ErrorCard";
+import AiResultView from "../AiResultSelector/AiResultSelector";
 
 interface MeetingHandlerProps {
     selectedMeeting: Meeting | undefined;
 }
 
 function MeetingHandler({ selectedMeeting }: MeetingHandlerProps) {
-    const { apiMessage, summarize, createAgenda, createInvite } = useAiApi();
+    const { result, isLoading, error, summarize, createAgenda, createInvite } =
+        useAiApi();
 
     if (!selectedMeeting) {
         return;
@@ -23,12 +27,10 @@ function MeetingHandler({ selectedMeeting }: MeetingHandlerProps) {
             <div className="meeting-selected">
                 <MeetingCard meeting={selectedMeeting} preview={true} />
             </div>
-            <div className="api-message">
-                <div className="api-message-inner">
-                    <p>{apiMessage}</p>
-                </div>
-            </div>
-            <div className="handler-row">
+            {isLoading && <LoadingCard loadingText="Genererar..." />}
+            {error && <ErrorCard error={error} />}
+            {result && <AiResultView result={result} />}
+            <fieldset className="handler-row" disabled={isLoading}>
                 <button onClick={() => summarize(meetingId)}>
                     Sammanfatta Mötesanteckningar
                 </button>
@@ -38,7 +40,7 @@ function MeetingHandler({ selectedMeeting }: MeetingHandlerProps) {
                 <button onClick={() => createInvite(meetingId)}>
                     Skapa Mötesinbjudan
                 </button>
-            </div>
+            </fieldset>
         </div>
     );
 }

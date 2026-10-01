@@ -1,22 +1,31 @@
 import { useState } from "react";
 import useMeetingApi from "../../hooks/useMeetingApi";
-import type { Meeting } from "../../types/types";
 import "./MeetingPage.css";
 
-import MeetingCard from "../../components/MeetingCard/MeetingCard";
+import LoadingCard from "../../components/LoadingCard/LoadingCard";
 import MeetingHandler from "../../components/MeetingHandler/MeetingHandler";
+import CreateMeetingForm from "../../components/CreateMeetingForm/CreateMeetingForm";
+import MeetingCard from "../../components/MeetingCard/MeetingCard";
 
 function MeetingPage() {
-    const { meetings, deleteMeeting } = useMeetingApi();
-    const [selectedMeeting, setSelectedMeeting] = useState<Meeting>();
+    const { meetings, createMeeting, deleteMeeting } = useMeetingApi();
+    const [selectedId, setSelectedId] = useState<string>();
 
     if (!meetings) {
-        return;
+        return <LoadingCard loadingText="Laddar Möten..." />;
     }
+
+    const selectedMeeting = meetings.find(
+        (meeting) => meeting.id === selectedId,
+    );
 
     return (
         <div className="meeting-page">
-            <MeetingHandler selectedMeeting={selectedMeeting} />
+            <MeetingHandler
+                key={selectedMeeting?.id}
+                selectedMeeting={selectedMeeting}
+            />
+            <CreateMeetingForm onCreate={createMeeting} />
             <h1>Bokade Möten</h1>
             <div className="meeting-grid">
                 {meetings.map((meeting) => (
@@ -24,7 +33,7 @@ function MeetingPage() {
                         key={meeting.id}
                         meeting={meeting}
                         onDelete={deleteMeeting}
-                        onSelect={setSelectedMeeting}
+                        onSelect={(m) => setSelectedId(m.id)}
                     />
                 ))}
             </div>
