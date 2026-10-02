@@ -1,15 +1,11 @@
-.meeting-page h1 {
+.meeting-list-page h1 {
     color: var(--mint-cream);
-    margin: 1rem 0;
-}
-
-.meeting-page .meeting-selected {
     margin-bottom: 1rem;
+    /* margin: 1rem 0; */
 }
 
-.meeting-page .meeting-grid {
+.meeting-list-page .meeting-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    margin-bottom: 2rem;
 }

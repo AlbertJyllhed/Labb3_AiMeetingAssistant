@@ -4,17 +4,11 @@ import "./MeetingCard.css";
 
 interface MeetingCardProps {
     meeting: Meeting | undefined;
-    preview?: boolean;
     onDelete?: (id: string) => void;
     onSelect?: (meeting: Meeting) => void;
 }
 
-function MeetingCard({
-    meeting,
-    preview = false,
-    onDelete,
-    onSelect,
-}: MeetingCardProps) {
+function MeetingCard({ meeting, onDelete, onSelect }: MeetingCardProps) {
     if (!meeting) {
         return;
     }
@@ -37,7 +31,7 @@ function MeetingCard({
 
     return (
         <div
-            className={`meeting-card ${preview ? "" : "clickable"}`}
+            className={`meeting-card ${Boolean(onSelect) ? "clickable" : ""}`}
             onClick={() => onSelect?.(meeting)}
         >
             <div className="meeting-row">
@@ -53,7 +47,7 @@ function MeetingCard({
                     <strong>Längd: </strong>
                     {meeting.durationMin} min
                 </p>
-                {!preview && (
+                {Boolean(onSelect) && (
                     <button
                         className="delete-btn"
                         onClick={(e) =>

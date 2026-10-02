@@ -1,8 +1,13 @@
+.meeting-handler .handler-meeting {
+    margin-bottom: 1rem;
+}
+
 .meeting-handler .handler-row {
     background-color: var(--royal-gold);
     display: flex;
     justify-content: center;
     gap: 1rem;
+    margin-bottom: 1rem;
     padding: 1rem;
     border-top: 1px solid var(--mint-cream);
     box-shadow: 0 3px 3px var(--prussian-blue);
@@ -43,7 +48,7 @@
 }
 
 .meeting-handler .handler-row button:hover {
-    box-shadow: 0 3px 3px var(--charcoal-blue);
+    box-shadow: 0 3px 3px var(--prussian-blue);
 }
 
 .meeting-handler .handler-row button:disabled {

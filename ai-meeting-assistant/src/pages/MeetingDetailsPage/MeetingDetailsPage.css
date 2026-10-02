@@ -1,0 +1,15 @@
+.meeting-details-page h1 {
+    color: var(--mint-cream);
+    margin: 1rem 0;
+}
+
+.meeting-details-page .back-link {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.5rem;
+}
+
+.meeting-details-page .icon {
+    color: var(--mint-cream);
+}

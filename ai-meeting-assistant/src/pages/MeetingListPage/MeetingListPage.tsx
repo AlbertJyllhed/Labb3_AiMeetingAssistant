@@ -1,30 +1,21 @@
-import { useState } from "react";
+import { useNavigate } from "react-router";
 import useMeetingApi from "../../hooks/useMeetingApi";
-import "./MeetingPage.css";
+import "./MeetingListPage.css";
 
 import LoadingCard from "../../components/LoadingCard/LoadingCard";
-import MeetingHandler from "../../components/MeetingHandler/MeetingHandler";
 import CreateMeetingForm from "../../components/CreateMeetingForm/CreateMeetingForm";
 import MeetingCard from "../../components/MeetingCard/MeetingCard";
 
-function MeetingPage() {
+function MeetingListPage() {
     const { meetings, createMeeting, deleteMeeting } = useMeetingApi();
-    const [selectedId, setSelectedId] = useState<string>();
+    const navigate = useNavigate();
 
     if (!meetings) {
         return <LoadingCard loadingText="Laddar Möten..." />;
     }
 
-    const selectedMeeting = meetings.find(
-        (meeting) => meeting.id === selectedId,
-    );
-
     return (
-        <div className="meeting-page">
-            <MeetingHandler
-                key={selectedMeeting?.id}
-                selectedMeeting={selectedMeeting}
-            />
+        <div className="meeting-list-page">
             <CreateMeetingForm onCreate={createMeeting} />
             <h1>Bokade Möten</h1>
             <div className="meeting-grid">
@@ -33,7 +24,7 @@ function MeetingPage() {
                         key={meeting.id}
                         meeting={meeting}
                         onDelete={deleteMeeting}
-                        onSelect={(m) => setSelectedId(m.id)}
+                        onSelect={(m) => navigate(`/meetings/${m.id}`)}
                     />
                 ))}
             </div>
@@ -41,4 +32,4 @@ function MeetingPage() {
     );
 }
 
-export default MeetingPage;
+export default MeetingListPage;

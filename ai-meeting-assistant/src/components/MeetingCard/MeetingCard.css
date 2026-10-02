@@ -13,6 +13,7 @@
 
 .meeting-card.clickable:hover {
     transform: translateY(-4px);
+    box-shadow: 0 7px 3px var(--prussian-blue);
 }
 
 .meeting-card .meeting-row {
@@ -48,5 +49,5 @@
 }
 
 .meeting-card .delete-btn:hover {
-    box-shadow: 0 3px 3px var(--charcoal-blue);
+    box-shadow: 0 3px 3px var(--prussian-blue);
 }

@@ -1,13 +1,25 @@
+import { Link } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import "./ErrorCard.css";
 
-function ErrorCard({ error }: { error: string }) {
+interface ErrorCardProps {
+    error: string;
+    backPath?: string;
+}
+
+function ErrorCard({ error, backPath }: ErrorCardProps) {
     return (
         <div className="error-card">
-            <FontAwesomeIcon icon={faCircleExclamation} />
-            <p>{error}</p>
-            <FontAwesomeIcon icon={faCircleExclamation} />
+            <div className="error-row">
+                <FontAwesomeIcon icon={faCircleExclamation} />
+                <p>{error}</p>
+            </div>
+            {backPath && (
+                <Link to={backPath} className="back-link">
+                    Tillbaka
+                </Link>
+            )}
         </div>
     );
 }

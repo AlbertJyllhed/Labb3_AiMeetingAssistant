@@ -1,6 +1,5 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
-    color: var(--prussian-blue);
     margin: 0;
     padding: 0;
 }
@@ -16,4 +15,6 @@
 html,
 body {
     background-color: var(--charcoal-blue);
+    color: var(--prussian-blue);
+    height: 100%;
 }

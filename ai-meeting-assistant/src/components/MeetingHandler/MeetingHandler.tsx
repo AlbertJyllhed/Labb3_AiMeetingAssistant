@@ -24,12 +24,10 @@ function MeetingHandler({ selectedMeeting }: MeetingHandlerProps) {
     return (
         <div className="meeting-handler">
             <h1>Hantera Möte</h1>
-            <div className="meeting-selected">
-                <MeetingCard meeting={selectedMeeting} preview={true} />
+            <div className="handler-meeting">
+                <MeetingCard meeting={selectedMeeting} />
             </div>
-            {isLoading && <LoadingCard loadingText="Genererar..." />}
-            {error && <ErrorCard error={error} />}
-            {result && <AiResultView result={result} />}
+
             <fieldset className="handler-row" disabled={isLoading}>
                 <button onClick={() => summarize(meetingId)}>
                     Sammanfatta Mötesanteckningar
@@ -41,6 +39,12 @@ function MeetingHandler({ selectedMeeting }: MeetingHandlerProps) {
                     Skapa Mötesinbjudan
                 </button>
             </fieldset>
+
+            <div className="handler-output">
+                {isLoading && <LoadingCard loadingText="Genererar..." />}
+                {error && <ErrorCard error={error} />}
+                {result && <AiResultView result={result} />}
+            </div>
         </div>
     );
 }
